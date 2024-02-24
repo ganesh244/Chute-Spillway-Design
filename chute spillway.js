@@ -1,51 +1,89 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chute Spillway Calculator</title>
-    <link rel="stylesheet" href="./style.css">
-</head>
-<body>
-    <div class="container">
-        <h1>Chute Spillway Calculator</h1>
-        <form id="spillwayForm">
-            <label for="c">Coefficient of Runoff:</label>
-            <input type="number" id="c" step="0.01" required><br>
+// Function to calculate Chute Spillway
+function calculateChuteSpillway(event) {
+    event.preventDefault(); // Prevent form submission
+    
+    // Gather inputs from form fields
+    var c = parseFloat(document.getElementById("c").value);
+    var i = parseFloat(document.getElementById("i").value);
+    var A = parseFloat(document.getElementById("A").value);
+    var H = parseFloat(document.getElementById("H").value);
+    var h = parseFloat(document.getElementById("h").value);
 
-            <label for="i">Rainfall Intensity (cm/hr):</label>
-            <input type="number" id="i" step="0.01" required><br>
+    // Define constants
+    const g = 9.81;
 
-            <label for="A">Catchment Area (hectares):</label>
-            <input type="number" id="A" step="0.01" required><br>
+    // Calculate peak discharge (Qp)
+    var Qp = c * i * A / 36;
 
-            <label for="H">Depth over the flow over weir (meter):</label>
-            <input type="number" id="H" step="0.01" required><br>
+    // Calculate length of weir (L)
+    var X1 = Math.pow(H, 1.5);
+    var L = Qp / (1.77 * X1);
 
-            <label for="h">Value of drop (meter):</label>
-            <input type="number" id="h" step="0.01" required><br>
+    // Calculate height of fall (Hf)
+    var Hf = h - (0.1 * h);
 
-            <button type="submit">Calculate</button>
-        </form>
+    // Calculate velocity of flow (V)
+    var X2 = 2 * g * Hf;
+    var V = Math.sqrt(X2);
 
-        <div id="result" style="display: none;">
-            <h2>Results</h2>
-            <p>Peak Discharge Qpeak (m<sup>3</sup>/s): <span id="Qp"></span></p>
-            <p>Length of Weir L (meters): <span id="L"></span></p>
-            <p>Initial depth d1 (meters): <span id="d1"></span></p>
-            <p>Froude Number Fr : <span id="Fr1"></span></p>
-            <p>Sequent Depth d2 (meters): <span id="d2"></span></p>
-            <p>Height of Chute/Floor Block (meters): <span id="X1"></span></p>
-            <p>Basin Length (meters): <span id="Lb"></span></p>
-            <p>Spacing of Floor Block from Upstream of Stilling Basin (meters): <span id="X3"></span></p>
-            <p>Minimum Distance of Floor Block from Side Wall (meters): <span id="X4"></span></p>
-            <p>Height of End Sill (meters): <span id="X5"></span></p>
-            <p>Actual Tail Water Depth (meters): <span id="X13"></span></p>
-            <p>Height of Side Wall and Wing Wall at Junction (meters): <span id="J"></span></p>
-            <p>Freeboard (meters): <span id="FB"></span></p>
-        </div>
-    </div>
+    // Calculate initial depth (d1)
+    var d1 = Qp / (L * V);
 
-    <script src="./chute spillway.js"></script>
-</body>
-</html>
+    // Calculate Froude number (Fr1)
+    var X3 = g * d1;
+    var X4 = Math.sqrt(X3);
+    var Fr1 = V / X4;
+
+    // Calculate sequent depth (d2)
+    var X5 = 1 + (8 * Fr1 * Fr1);
+    var X6 = Math.sqrt(X5);
+    var X7 = X6 - 1;
+    var d2 = X7 * d1 / 2;
+
+    // Calculate height of chute/floor block (X1)
+    var X8 = 0.75 * d1;
+
+    // Calculate basin length (Lb)
+    var X9 = Math.pow(Fr1, 0.38);
+    var Lb = 4.5 * d2 / X9;
+
+    // Calculate spacing of floor block from upstream of stilling basin (X3)
+    var X10 = Lb / 3;
+
+    // Calculate minimum distance of floor block from side wall (X4)
+    var X11 = 3 * d1 / 8;
+
+    // Calculate height of end sill (X5)
+    var X12 = 0.07 * d2;
+
+    // Calculate actual tail water depth (X13)
+    var X13 = Math.pow(Fr1, 0.45);
+    var D2 = 1.4 * X13 * d1;
+
+    // Calculate height of side wall and wing wall at junction (J)
+    var J = (d2 / 3) + D2;
+
+    // Calculate freeboard (FB)
+    var FB = d2 / 3;
+
+    // Display results in HTML
+    document.getElementById("Qp").innerText = Qp.toFixed(2);
+    document.getElementById("L").innerText = L.toFixed(2);
+    document.getElementById("d1").innerText = d1.toFixed(2);
+    document.getElementById("Fr1").innerText = Fr1.toFixed(2);
+    document.getElementById("d2").innerText = d2.toFixed(2);
+    document.getElementById("X1").innerText = X8.toFixed(2);
+    document.getElementById("Lb").innerText = Lb.toFixed(2);
+    document.getElementById("X3").innerText = X10.toFixed(2);
+    document.getElementById("X4").innerText = X11.toFixed(2);
+    document.getElementById("X5").innerText = X12.toFixed(2);
+    document.getElementById("X13").innerText = X13.toFixed(2);
+    document.getElementById("J").innerText = J.toFixed(2);
+    document.getElementById("FB").innerText = FB.toFixed(2);
+
+    // Show results
+    document.getElementById("result").style.display = "block";
+}
+
+// Attach event listener to form submission
+document.getElementById("spillwayForm").addEventListener("submit", calculateChuteSpillway);
