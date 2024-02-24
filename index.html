@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chute Spillway Calculator</title>
+    <link rel="stylesheet" type="text/css" href="./style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Chute Spillway Calculator</h1>
+        <form id="spillwayForm">
+            <label for="c">Coefficient of runoff:</label>
+            <input type="number" id="c" name="c" step="any"><br><br>
+            <label for="i">Rainfall intensity (cm/hr):</label>
+            <input type="number" id="i" name="i" step="any"><br><br>
+            <label for="A">Catchment area (hectares):</label>
+            <input type="number" id="A" name="A" step="any"><br><br>
+            <label for="H">Depth over the flow over weir (m):</label>
+            <input type="number" id="H" name="H" step="any"><br><br>
+            <label for="h">Drop (m):</label>
+            <input type="number" id="h" name="h" step="any"><br><br>
+            <label for="Ke">Entrance loss coefficient:</label>
+            <input type="number" id="Ke" name="Ke" step="any"><br><br>
+            <label for="Kc">Friction loss coefficient:</label>
+            <input type="number" id="Kc" name="Kc" step="any"><br><br>
+            <label for="l">Length (m):</label>
+            <input type="number" id="l" name="l" step="any"><br><br>
+            <input type="submit" value="Calculate">
+        </form>
+        <div id="result" style="display: none;">
+            <h2>Result:</h2>
+            <p>Peak Discharge (m<sup>3</sup>/s): <span id="Qp"></span></p>
+            <p>Length of weir (m): <span id="L"></span></p>
+            <p>Initial depth (m): <span id="d1"></span></p>
+            <p>Froud Number: <span id="Fr1"></span></p>
+            <p>Sequent depth (m): <span id="d2"></span></p>
+            <p>Height of chute/floor block (m): <span id="chuteHeight"></span></p>
+            <p>Width and spacing between chute/floor block (m): <span id="chuteWidth"></span></p>
+            <p>Basin length (m): <span id="Lb"></span></p>
+            <p>Spacing of floor block from upstream of stilling basin (m): <span id="spacingFromUpstream"></span></p>
+            <p>Minimum distance of floor block from side wall (m): <span id="minDistanceFromSideWall"></span></p>
+            <p>Height of end sill (m): <span id="endSillHeight"></span></p>
+            <p>Actual tail water depth (m): <span id="D2"></span></p>
+            <p>Height of side wall and wing wall at junction (m): <span id="sideWallHeight"></span></p>
+            <p>Freeboard (m): <span id="freeboard"></span></p>
+        </div>
+    </div>
+    <script src="./chute spillway.js"></script>
+</body>
+</html>
